@@ -57,7 +57,10 @@ var jsPsychMMChunking = (function (jsPsych) {
             line_length_frac: { type: jsPsych.ParameterType.FLOAT, default: 0.7, description: 'Fraction of item_size used as bar length.' },
 
             // --- Color/orientation constraints ---
-            min_difference: { type: jsPsych.ParameterType.INT, default: 20,
+            min_difference_ori: { type: jsPsych.ParameterType.INT, default: 20,
+                description: 'Min angular distance between items of the same type (color or orientation).' },
+
+            min_difference_color: { type: jsPsych.ParameterType.INT, default: 40,
                 description: 'Min angular distance between items of the same type (color or orientation).' },
 
             // --- Wheel ---
@@ -230,7 +233,7 @@ var jsPsychMMChunking = (function (jsPsych) {
 
             const values = trial.item_values.length === set_size
                 ? trial.item_values
-                : generateValues(trial.stim_types, trial.min_difference);
+                : generateValues(trial.stim_types, trial.min_difference_color, trial.min_difference_ori);
 
             const halfN = set_size / 2;
             const set1Pos = positions.slice(0, halfN);
@@ -402,7 +405,7 @@ var jsPsychMMChunking = (function (jsPsych) {
     /* ================================================================== */
 
     // Get color and orientation values with a certain minimum distance
-    function generateValues(stimTypes, minDiff) {
+    function generateValues(stimTypes, minDiffColor, minDiffOri) {
         // Generate independently per type, maintaining separation only within same type.
         const colorPicked = [];
         const oriPicked   = [];
@@ -411,6 +414,8 @@ var jsPsychMMChunking = (function (jsPsych) {
         for (const t of stimTypes) {
             const space = t === 'color' ? 360 : 180;
             const already = t === 'color' ? colorPicked : oriPicked;
+            const minDiff = t === 'color' ? minDiffColor : minDiffOri;
+            
             let v = randInt(0, space - 1);
             let tries = 0;
             while (already.some(a => circularDist(v, a, space) < minDiff) && tries < 500) {
@@ -486,11 +491,13 @@ var jsPsychMMChunking = (function (jsPsych) {
             const dist  = Math.sqrt(relX * relX + relY * relY);
             const angle = wrapAngle(Math.atan2(relY, relX) / Math.PI * 180, 360);
 
-            if (dist >= midRadius && dist <= outerBound) {
+            if (dist >= midRadius && dist <= outerBound && relY < 0) {
+                // Over ori ring - show ori preview
                 probeCircle.style.backgroundColor = '';
                 // atan2 gives screen angle (y-down), negate relY to convert to math convention
                 const mathAngle = wrapAngle(Math.atan2(-relY, relX) / Math.PI * 180, 180);
                 setOriBar(probeOriBar, Math.round(mathAngle), item_size, line_width, line_length_frac);
+                
             } else if (dist >= innerBound && dist < midRadius) {
                 // Over color ring — show color preview
                 clearOriBar(probeOriBar);

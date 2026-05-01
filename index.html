@@ -125,6 +125,13 @@ const allTrialVars = jsPsych.randomization.shuffle(
 );
 
 timeline.push({
+    type: jsPsychInstructions,
+    pages: ['<p>Placeholder for Instructions!</p>'],
+    show_clickable_nav: true,
+    button_label_next: 'Start the task',
+});
+
+timeline.push({
     timeline: [{
         type:             jsPsychMMChunking,
         stim_types:       jsPsych.timelineVariable('stim_types'),
@@ -132,7 +139,7 @@ timeline.push({
         probe_index:      jsPsych.timelineVariable('probe_index'),
         block_type:       jsPsych.timelineVariable('block_type'),
         is_practice:      false,
-        feedback:         true,   // <<< set to false for real runs
+        feedback:         true,
     }],
     timeline_variables: allTrialVars,
     randomize_order: false,       // already shuffled!

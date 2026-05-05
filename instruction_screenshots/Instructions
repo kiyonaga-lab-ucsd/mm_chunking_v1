@@ -1,0 +1,40 @@
+In this experiment, you will have to remember some briefly presented colors and lines.
+You will need to complete #X# trials, each of which takes around 5 seconds. 
+It should take less than #X# minutes total. 
+There are no scheduled breaks in the experiment, but feel free to take breaks between trials, as the trial does not begin until you click a central fixation point. 
+Please do not participant if you do not have normal or corrected-to-normal color vision.
+
+Before each trial starts, there will be four placeholder circles. 
+Once you click on the central cross to start each trial, two of these four circles will be filled with colors of various shades, or lines of various orientations, or a combination of shades and orientations. 
+Shortly after, the two items in these two circles will dissapear, and two new items will appear in the other two circles. 
+
+In this example, the two circles on the left are first filled by one color and one orientation. Then, the two circles on the right are also filled by one color and one orientation. 
+# show 'instruction_screenshots/example_stimulus_group1.png'
+# show 'instruction_screenshots/example_stimulus_group2.png'
+
+Your job is to remember the item that was shown in each location.
+If it was a color, remember its shade. If it was a line, remember its orientation. 
+These items will all be presented very briefly (less than a second), so make sure to not start a trial before you are ready and able to pay attention! 
+During the task, you may be tempted to remember the colors by repeating the name of that color to yourself.
+However, we are interested in your visual, not verbal, memory, so please avoid from doing so. 
+If you still find yourself from repeating the name of a color to yourself, we suggest you repeat the word "the" over and over again.
+This will help prevent you from using words to describe and remember the colors. 
+
+After all of the four items are presented, there will be a "cue" period, where two of the four placeholder circles will have a darker border. 
+For future steps, you will only need to continue remembering the items in those two circles, so you can essentially "drop" the items from the other two circles from your memory. 
+To enhance your memory performance, please do your best to take advantage of this fact, as opposed to remembering all four items throughout the entire trial. 
+
+Continuing our previous example, the top left and bottom right cirlces have been cued. This means we only need to remember the items presented in these two circles (in this case, it was a line that points upwards and slightly towards the left for the top left circle, and a color that was light green in the bottom right circle)
+# show 'instruction_screenshots/example_retro_cue.png'
+
+These "cues" will dissapear shortly after, and almost immediately after, one of the two placeholder circles that were just cued will be darkened again. 
+Your task will be to report the shade of the color, or orientation of the bar, that was shown in that location. 
+This will be done through two reponse wheels that now appear. 
+To report the shade of a color, you can hover over the corresponding color on the 360 degrees color wheel.
+Once you find the color that you believe matches the color that was presented in the darkened location, you can click on that color on the wheel to lock in your answer. 
+Similarly, to report an orientation, you click on the corresponding orientation on the orientation wheel (which is out of 180 degrees, since lines are symmetrical). 
+
+To finish our previous example, let's say the top left circle was the one that you are asked to respond for. Then, you would drag your mouse to the region on the orientation wheel (the black one, that spans across 180 degrees) that corresponds to the orientation the line was pointing towards. Once you are satisfied, you can click on the orientation wheel to lock in your response. If you are supposed to report a color, you should do the same thing, except hover over and click on the color wheel. 
+# show 'instruction_screenshots/example_report/report.png'
+
+Very importantly, please indicate your response as quickly as possible. You will only be given up to 3 seconds to do so. Therefore, you do not need to strive for perfection, but rather please just be as percise as possible.

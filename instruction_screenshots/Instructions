@@ -1,8 +1,7 @@
 In this experiment, you will have to remember some briefly presented colors and lines.
-You will need to complete #X# trials, each of which takes around 5 seconds. 
-It should take less than #X# minutes total. 
+You will need to complete #X# trials, each of which takes around 5 seconds, and the entire experiment should take less than #X# minutes total. 
 There are no scheduled breaks in the experiment, but feel free to take breaks between trials, as the trial does not begin until you click a central fixation point. 
-Please do not participant if you do not have normal or corrected-to-normal color vision.
+Finally, please do not participant if you do not have normal or corrected-to-normal color vision.
 
 Before each trial starts, there will be four placeholder circles. 
 Once you click on the central cross to start each trial, two of these four circles will be filled with colors of various shades, or lines of various orientations, or a combination of shades and orientations. 
@@ -21,13 +20,13 @@ If you still find yourself from repeating the name of a color to yourself, we su
 This will help prevent you from using words to describe and remember the colors. 
 
 After all of the four items are presented, there will be a "cue" period, where two of the four placeholder circles will have a darker border. 
-For future steps, you will only need to continue remembering the items in those two circles, so you can essentially "drop" the items from the other two circles from your memory. 
+Going forward, you will only need to continue remembering the items in those two circles, so you can essentially "drop" the items from the other two circles from your memory. 
 To enhance your memory performance, please do your best to take advantage of this fact, as opposed to remembering all four items throughout the entire trial. 
 
 Continuing our previous example, the top left and bottom right cirlces have been cued. This means we only need to remember the items presented in these two circles (in this case, it was a line that points upwards and slightly towards the left for the top left circle, and a color that was light green in the bottom right circle)
 # show 'instruction_screenshots/example_retro_cue.png'
 
-These "cues" will dissapear shortly after, and almost immediately after, one of the two placeholder circles that were just cued will be darkened again. 
+These "cues" will then dissapear, and almost immediately after, one of the two placeholder circles that were just cued will be darkened again. 
 Your task will be to report the shade of the color, or orientation of the bar, that was shown in that location. 
 This will be done through two reponse wheels that now appear. 
 To report the shade of a color, you can hover over the corresponding color on the 360 degrees color wheel.

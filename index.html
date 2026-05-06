@@ -76,13 +76,25 @@ const timeline = [];
 function buildTrialVariables(blockType, nTrialsPerCell) {
     const vars = [];
 
+    const [feature, cueStructure] = blockType.split('_');
+
     const getStimTypes = (feature) => {
         if (feature === 'color')       return ['color', 'color', 'color', 'color'];
+        
         if (feature === 'orientation') return ['orientation', 'orientation', 'orientation', 'orientation'];
-        return ['color', 'orientation', 'color', 'orientation']; // mixed
+        
+        if (feature === 'homogenous'){ 
+            if (Math.random() < 0.5) {
+                return ['color', 'color', 'orientation', 'orientation'];
+            } else {
+                return ['orientation', 'orientation', 'color', 'color'];
+            }
+        } // same category within each group
+
+        // heterogenous: different cateogory within each group
+        return ["color", "orientation", "color", "orientation"]; 
     };
 
-    const [feature, cueStructure] = blockType.split('_');
     const stimTypes = getStimTypes(feature);
 
     // Within: cue both items from the same temporal set
@@ -112,8 +124,10 @@ const all_trial_types = [
     'color_across',
     'orientation_within',
     'orientation_across',
-    'mixed_within',
-    'mixed_across',
+    'homogenous_within',
+    'homogenous_across',
+    'heterogenous_within',
+    'heterogenous_across',
 ];
 
 // how many trials per cell do we want?

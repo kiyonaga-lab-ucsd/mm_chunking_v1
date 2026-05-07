@@ -54,8 +54,8 @@ var jsPsychMMChunking = (function (jsPsych) {
             num_placeholders: { type: jsPsych.ParameterType.INT, default: 4,   description: 'Number of placeholder locations.' },
             item_size: { type: jsPsych.ParameterType.INT, default: 90,  description: 'Diameter of each item circle (px).' },
             radius: { type: jsPsych.ParameterType.INT, default: 160, description: 'Radius of the placeholder ring (px).' },
-            line_width: { type: jsPsych.ParameterType.INT, default: 6,   description: 'Width of orientation bar (px).' },
-            line_length_frac: { type: jsPsych.ParameterType.FLOAT, default: 0.7, description: 'Fraction of item_size used as bar length.' },
+            line_width: { type: jsPsych.ParameterType.INT, default: 10,   description: 'Width of orientation bar (px).' },
+            line_length_frac: { type: jsPsych.ParameterType.FLOAT, default: 0.9, description: 'Fraction of item_size used as bar length.' },
 
             // --- Color/orientation constraints ---
             min_difference_ori: { type: jsPsych.ParameterType.INT, default: 20,
@@ -231,7 +231,7 @@ var jsPsychMMChunking = (function (jsPsych) {
 
             /* ---- Assign values & positions ---- */
             const allPositions = Array.from({ length: num_placeholders }, (_, i) => i);
-            const positions = this.jsPsych.randomization.shuffle([...allPositions]).slice(0, set_size);
+            const positions = self.jsPsych.randomization.shuffle([...allPositions]).slice(0, set_size);
 
             const values = trial.item_values.length === set_size
                 ? trial.item_values
@@ -381,9 +381,9 @@ var jsPsychMMChunking = (function (jsPsych) {
                         item_size, line_width: trial.line_width,
                         line_length_frac: trial.line_length_frac
                     });
-                    this.jsPsych.pluginAPI.setTimeout(endTrial, 1500);
+                    self.jsPsych.pluginAPI.setTimeout(endTrial, 1500);
                 } else {
-                    this.jsPsych.pluginAPI.setTimeout(endTrial, 100);
+                    self.jsPsych.pluginAPI.setTimeout(endTrial, 100);
                 }
             };
 
@@ -404,7 +404,7 @@ var jsPsychMMChunking = (function (jsPsych) {
                 if (trialEnded) return;
                 trialEnded = true;
                 display_element.innerHTML = '';
-                this.jsPsych.finishTrial(trialData || {});
+                self.jsPsych.finishTrial(trialData || {});
             };
 
         }

@@ -115,10 +115,15 @@ function buildTrialVariables(blockType, nTrialsPerCell) {
             }
         }
     }
+    console.log("number of trials: ", vars.length);
     return vars;
 }
 
 // all trial types
+// color_within:
+// color_across:
+// orientation_within: 
+// etc
 const all_trial_types = [
     'color_within',
     'color_across',
@@ -131,8 +136,7 @@ const all_trial_types = [
 ];
 
 // how many trials per cell do we want?
-const nTrialsPerCell = 2; // <<< increase this for real runs
-const total_trials = nTrialsPerCell*all_trial_types.length
+const nTrialsPerCell = 1; // <<< increase this for real runs
 
 const allTrialVars = jsPsych.randomization.shuffle(
     all_trial_types.flatMap(bt => buildTrialVariables(bt, nTrialsPerCell))
@@ -145,26 +149,53 @@ timeline.push({
     button_label_next: 'Start the task',
 });
 
+// Split into blocks of 36
+const blockSize = 36;
+const blocks = [];
+for (let i = 0; i < allTrialVars.length; i += blockSize) {
+    blocks.push(allTrialVars.slice(i, i + blockSize));
+}
+
 timeline.push({
-    timeline: [{
-        type:             jsPsychMMChunking,
-        stim_types:       jsPsych.timelineVariable('stim_types'),
-        retrocue_indices: jsPsych.timelineVariable('retrocue_indices'),
-        probe_index:      jsPsych.timelineVariable('probe_index'),
-        block_type:       jsPsych.timelineVariable('block_type'),
-        is_practice:      false,
-        feedback:         true,
-    }],
-    timeline_variables: allTrialVars,
-    randomize_order: false,       // already shuffled!
+    type: jsPsychInstructions,
+    pages: ['<p>Placeholder for Instructions!</p>'],
+    show_clickable_nav: true,
+    button_label_next: 'Start the task',
 });
+
+// Add each block with a break screen after (except the last)
+blocks.forEach((blockVars, blockIndex) => {
+    timeline.push({
+        timeline: [{
+            type:             jsPsychMMChunking,
+            stim_types:       jsPsych.timelineVariable('stim_types'),
+            retrocue_indices: jsPsych.timelineVariable('retrocue_indices'),
+            probe_index:      jsPsych.timelineVariable('probe_index'),
+            block_type:       jsPsych.timelineVariable('block_type'),
+            is_practice:      false,
+            feedback:         true,
+        }],
+        timeline_variables: blockVars,
+        randomize_order: false,
+    });
+
+    if (blockIndex < blocks.length - 1) {
+        timeline.push({
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `<p>You've completed block ${blockIndex + 1} of ${blocks.length}.</p>
+                       <p>Take a short break whenever you're ready.</p>`,
+            choices: ['Continue'],
+        });
+    }
+});
+
 
 /* ======================================================================
    END — swap in real redirect / save logic when ready
    ====================================================================== */
 timeline.push({
     type: jsPsychInstructions,
-    pages: ['<p>Done! Thank you.</p>'],
+    pages: ['<p>You are done! Thank you.</p>'],
     show_clickable_nav: true,
     button_label_next: 'Finish',
 });

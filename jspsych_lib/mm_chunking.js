@@ -42,11 +42,12 @@ var jsPsychMMChunking = (function (jsPsych) {
             },
 
             // --- Timing (ms) ---
-            display_time: { type: jsPsych.ParameterType.INT, default: 750,  description: 'Duration each set of stimuli is shown.' },
+            display_time: { type: jsPsych.ParameterType.INT, default: 1000,  description: 'Duration each set of stimuli is shown.' },
             isi_time: { type: jsPsych.ParameterType.INT, default: 500,  description: 'ISI between first and second set.' },
             retrocue_time: { type: jsPsych.ParameterType.INT, default: 750,  description: 'Duration retro-cue is shown.' },
             post_retrocue_delay: { type: jsPsych.ParameterType.INT, default: 500,  description: 'Delay after retro-cue before probe.' },
-            iti: { type: jsPsych.ParameterType.INT, default: 1500,  description: 'Inter-trial interval.' },
+            max_response_time: { type: jsPsych.ParameterType.INT, default: 3000, description: 'Maximum response time'},
+            iti: { type: jsPsych.ParameterType.INT, default: 1000,  description: 'Inter-trial interval.' },
 
             // --- Layout ---
             set_size: { type: jsPsych.ParameterType.INT, default: 4,   description: 'Total number of items (must be even).' },
@@ -90,6 +91,7 @@ var jsPsychMMChunking = (function (jsPsych) {
 
         trial(display_element, trial) {
             // Add CSS once
+            const self = this;
             if (!retrocue_css_added) {
                 const css = `
                     /* Placeholder circles — outline-offset avoids layout shift
@@ -333,13 +335,18 @@ var jsPsychMMChunking = (function (jsPsych) {
                     display_element,
                     onResponse
                 });
+
+                setTimeout(endTrial, trial.max_response_time);
+                
             };
 
            /* ---- Response handling ------------------------------------ */
             let trialData = null;
 
             const onResponse = (reportedValue, reportedFeature) => {
-                const rt    = performance.now() - startTime;
+                self.jsPsych.pluginAPI.clearAllTimeouts(); // cancel timeout if they respond
+                const trial_rt    = performance.now() - startTime;
+                console.log("RT: ", trial_rt)
                 const space = probeType === 'orientation' ? 180 : 360;
                 const err   = circularError(reportedValue, probeVal, space);
 
@@ -357,7 +364,7 @@ var jsPsychMMChunking = (function (jsPsych) {
                     reported_feature:    reportedFeature,   // 'color' or 'orientation'
                     clicked_wrong_wheel: reportedFeature !== probeType,
                     error:               err,
-                    rt,
+                    trial_rt:            trial_rt,
                     all_positions:       positions,
                     all_values:          values,
                     rc_positions:        rcPos,
@@ -392,7 +399,10 @@ var jsPsychMMChunking = (function (jsPsych) {
             
             /* End trial and record information:
             -------------------------------- */
+            let trialEnded = false;
             var endTrial = () => {
+                if (trialEnded) return;
+                trialEnded = true;
                 display_element.innerHTML = '';
                 this.jsPsych.finishTrial(trialData || {});
             };

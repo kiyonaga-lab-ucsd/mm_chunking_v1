@@ -44,9 +44,22 @@ const jsPsych = initJsPsych({
     on_finish: () => { /* data already saved via on_finish of survey */ }
 });
 
-/* Participant identifiers from URL */
-const subject_id = '999';
-jsPsych.data.addProperties({ subject_id });
+// Generate a truly random participant ID
+const unique_participant_id = jsPsych.randomization.randomID(10);
+const filename = `mm_chunking_v1_${unique_participant_id}.csv`;
+jsPsych.data.addProperties({ unique_participant_id });
+
+// Get the SONA id from url parameters
+const url_params = new URLSearchParams(window.location.search);
+const raw_sona_id = url_params.get('participant');
+if (raw_sona_id){
+    jsPsych.data.addProperties({ raw_sona_id });
+}
+
+const DEBUG = {
+      enabled: false,
+      max_blocks: 1 // do only first ${max_blocks} blocks
+    };
 
 // Initialize timeline
 const timeline = [];
@@ -115,7 +128,6 @@ function buildTrialVariables(blockType, nTrialsPerCell) {
             }
         }
     }
-    console.log("number of trials: ", vars.length);
     return vars;
 }
 
@@ -136,24 +148,32 @@ const all_trial_types = [
 ];
 
 // how many trials per cell do we want?
-const nTrialsPerCell = 1; // <<< increase this for real runs
+const nTrialsPerCell = 1; // 
+const total_trials = nTrialsPerCell*all_trial_types.length*4; // nTrialsPerCell * 8 trial types * 2 retrocue pair options * 2 probe options
 
 const allTrialVars = jsPsych.randomization.shuffle(
     all_trial_types.flatMap(bt => buildTrialVariables(bt, nTrialsPerCell))
 );
 
-timeline.push({
-    type: jsPsychInstructions,
-    pages: ['<p>Placeholder for Instructions!</p>'],
-    show_clickable_nav: true,
-    button_label_next: 'Start the task',
-});
+// Split into blocks of 32
+let blocks = [];
+const blockSize = 32;
+if (total_trials % blockSize != 0){
+    throw new Error("Your trial numbers are not divisible!");
+}
 
-// Split into blocks of 36
-const blockSize = 36;
-const blocks = [];
 for (let i = 0; i < allTrialVars.length; i += blockSize) {
     blocks.push(allTrialVars.slice(i, i + blockSize));
+}
+
+if (DEBUG.enabled) {
+    blocks = blocks.slice(0, DEBUG.max_blocks);
+}
+
+var trial_count = 0;
+function update_progress_bar() {
+    trial_count = trial_count + 1;
+    jsPsych.setProgressBar(trial_count/total_trials);
 }
 
 timeline.push({
@@ -174,9 +194,10 @@ blocks.forEach((blockVars, blockIndex) => {
             block_type:       jsPsych.timelineVariable('block_type'),
             is_practice:      false,
             feedback:         true,
+            on_finish:        update_progress_bar,
         }],
         timeline_variables: blockVars,
-        randomize_order: false,
+        randomize_order: false, // it's false because we already randomized in buildTrialVars
     });
 
     if (blockIndex < blocks.length - 1) {
@@ -202,8 +223,6 @@ timeline.push({
 
 /* ---- Run ---- */
 jsPsych.run(timeline);
-
-
 
 
 </script>

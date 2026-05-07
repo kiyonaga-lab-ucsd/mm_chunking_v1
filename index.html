@@ -41,7 +41,12 @@
 const jsPsych = initJsPsych({
     show_progress_bar: true,
     auto_update_progress_bar: false,
-    on_finish: () => { /* data already saved via on_finish of survey */ }
+    on_finish: () => {
+        // Redirect to SONA completion URL
+        // Replace YOUR_SONA_CREDIT_TOKEN with your actual token
+        const sona_url = `https://ucsd.sona-systems.com/webstudy_credit.aspx?experiment_id=3108&credit_token=3974845ab68c4a63a156799454da879b&survey_code=${raw_sona_id}`;
+        window.location = sona_url;
+    }
 });
 
 // Generate a truly random participant ID
@@ -211,16 +216,24 @@ blocks.forEach((blockVars, blockIndex) => {
 });
 
 
-/* ======================================================================
-   END — swap in real redirect / save logic when ready
-   ====================================================================== */
+/* ============================
+   END 
+   ============================ */
+
 timeline.push({
     type: jsPsychInstructions,
-    pages: ['<p>You are done! Thank you.</p>'],
+    pages: ['<p>Thank you for participating!</p><p>Press "Finish" to be taken back to SONA</p>'],
     show_clickable_nav: true,
-    button_label_next: 'Finish',
+    button_label_next: 'Back to SONA',
 });
 
+timeline.push({
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "LZhfcBUZnJmU",
+    filename: filename,
+    data_string: () => jsPsych.data.get().csv()
+});
 /* ---- Run ---- */
 jsPsych.run(timeline);
 

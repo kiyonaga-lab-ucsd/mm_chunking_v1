@@ -43,7 +43,7 @@ var jsPsychMMChunking = (function (jsPsych) {
 
             // --- Timing (ms) ---
             display_time: { type: jsPsych.ParameterType.INT, default: 1000,  description: 'Duration each set of stimuli is shown.' },
-            isi_time: { type: jsPsych.ParameterType.INT, default: 500,  description: 'ISI between first and second set.' },
+            isi_time: { type: jsPsych.ParameterType.INT, default: 750,  description: 'ISI between first and second set.' },
             retrocue_time: { type: jsPsych.ParameterType.INT, default: 750,  description: 'Duration retro-cue is shown.' },
             post_retrocue_delay: { type: jsPsych.ParameterType.INT, default: 500,  description: 'Delay after retro-cue before probe.' },
             max_response_time: { type: jsPsych.ParameterType.INT, default: 3000, description: 'Maximum response time'},

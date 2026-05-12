@@ -221,7 +221,6 @@ timeline.push({
         block_type:       jsPsych.timelineVariable('block_type'),
         is_practice:      true,
         feedback:         true,  // always show feedback during practice
-        on_finish:        update_progress_bar,
     }],
     timeline_variables: practiceVars,
     randomize_order: false,
@@ -270,7 +269,8 @@ blocks.forEach((blockVars, blockIndex) => {
 
 timeline.push({
     type: jsPsychInstructions,
-    pages: ['<p>Thank you for participating!</p><p>Press "Finish" to be taken back to SONA</p>'],
+    pages: ['<p>Thank you for participating!</p><p>Press "Back to SONA" to be taken back to SONA</p><p><strong>You must do so in order to receive credit!</strong></p>'
+    ],
     show_clickable_nav: true,
     button_label_next: 'Back to SONA',
 });

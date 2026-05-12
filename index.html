@@ -151,8 +151,9 @@ const all_trial_types = [
 ];
 
 // how many trials per cell do we want?
-const nTrialsPerCell = 2; // we want 9
+const nTrialsPerCell = 1; // we want 9
 const total_trials = nTrialsPerCell*all_trial_types.length*2*2; // nTrialsPerCell * 8 trial types * 2 retrocue pair options * 2 probe options
+const n_practice_trials = 16;
 
 const allTrialVars = jsPsych.randomization.shuffle(
     all_trial_types.flatMap(bt => buildTrialVariables(bt, nTrialsPerCell))
@@ -193,6 +194,44 @@ timeline.push({
         '<p> These "cues" will then dissapear, and almost immediately after, one of the two placeholder circles that were just cued will be darkened again. Your task will be to report the shade of the color, or orientation of the bar, that was shown in that location. </p><p> This will be done through two reponse wheels that now appear. To report the shade of a color, you can hover over the corresponding color on the 360 degrees color wheel. Once you find the color that you believe matches the color that was presented in the darkened location, you can click on that color on the wheel to lock in your answer. Similarly, to report an orientation, you click on the corresponding orientation on the orientation wheel (which is out of 180 degrees, since lines are symmetrical). </p>',
         '<p> To finish our previous example, let us say the top left circle was the one that you are asked to respond for. Then, you would drag your mouse to the region on the orientation wheel (the black one, that spans across 180 degrees) that corresponds to the orientation the line was pointing towards. Once you are satisfied, you can click on the orientation wheel to lock in your response. If you are supposed to report a color, you should do the same thing, except hover over and click on the color wheel. </p><p align="center"><img src="instruction_screenshots/example_report.png" width="300" border=0></p><p> Very importantly, please indicate your response as quickly as possible. <strong>You will only be given up to 3 seconds to do so.</strong> Therefore, you do not need to strive for perfection, but rather, please click on the wheels once you are relatively satisfied with your answer. </p>',
         '<p> Once you click on the "continue" button, the first trial will start. Good luck! </p>'
+    ],
+    show_clickable_nav: true,
+    button_label_next: 'Continue',
+});
+
+// Practice trials
+timeline.push({
+    type: jsPsychInstructions,
+    pages: ['<p>First, you will complete some practice trials. Press "Practice" to continue.</p>',
+    ],
+    show_clickable_nav: true,
+    button_label_next: 'Practice',
+});
+
+// Build practice trial variables
+const practiceVars = jsPsych.randomization.shuffle(
+    all_trial_types.flatMap(bt => buildTrialVariables(bt, 1))
+).slice(0, n_practice_trials);
+
+timeline.push({
+    timeline: [{
+        type:             jsPsychMMChunking,
+        stim_types:       jsPsych.timelineVariable('stim_types'),
+        retrocue_indices: jsPsych.timelineVariable('retrocue_indices'),
+        probe_index:      jsPsych.timelineVariable('probe_index'),
+        block_type:       jsPsych.timelineVariable('block_type'),
+        is_practice:      true,
+        feedback:         true,  // always show feedback during practice
+        on_finish:        update_progress_bar,
+    }],
+    timeline_variables: practiceVars,
+    randomize_order: false,
+});
+
+// Practice trials
+timeline.push({
+    type: jsPsychInstructions,
+    pages: ['<p>You have completed the practice. Press "Continue" to proceed to the main task.</p>',
     ],
     show_clickable_nav: true,
     button_label_next: 'Continue',

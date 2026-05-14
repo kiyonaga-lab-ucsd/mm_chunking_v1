@@ -341,14 +341,18 @@ var jsPsychMMChunking = (function (jsPsych) {
             };
 
            /* ---- Response handling ------------------------------------ */
-            let trialData = null;
+            let trial_rt = null;
+            let err = null;
+            let reported_value = null;
+            let space = null;
 
             const onResponse = (reportedValue, reportedFeature) => {
                 self.jsPsych.pluginAPI.clearAllTimeouts(); // cancel timeout if they respond
-                const trial_rt    = performance.now() - startTime;
+                trial_rt    = performance.now() - startTime;
                 console.log("RT: ", trial_rt)
-                const space = probeType === 'orientation' ? 180 : 360;
-                const err   = circularError(reportedValue, probeVal, space);
+                reported_value = reportedValue;
+                space = probeType === 'orientation' ? 180 : 360;
+                err   = circularError(reported_value, probeVal, space);
 
                 if (trial.feedback) {
                     showFeedback({
@@ -375,6 +379,7 @@ var jsPsychMMChunking = (function (jsPsych) {
             /* End trial and record information:
             -------------------------------- */
             let trialEnded = false;
+            let trialData = null;
             var endTrial = () => {
                 if (trialEnded) return;
                 trialEnded = true;

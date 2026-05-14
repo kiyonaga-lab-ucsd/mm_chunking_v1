@@ -287,37 +287,37 @@ var jsPsychMMChunking = (function (jsPsych) {
             // Show the first two items
             const showSet1 = () => {
                 set1Pos.forEach((p, i) => showItem(p, set1Type[i], set1Val[i]));
-                setTimeout(hideSet1, trial.display_time)
+                self.jsPsych.pluginAPI.setTimeout(hideSet1, trial.display_time)
             };
 
             // Hide the first two items
             const hideSet1 = () => {
                 set1Pos.forEach(p => hideItem(p));
-                setTimeout(showSet2, trial.isi_time)
+                self.jsPsych.pluginAPI.setTimeout(showSet2, trial.isi_time)
             };
 
             // Show the second two items
             const showSet2 = () => {
                 set2Pos.forEach((p, i) => showItem(p, set2Type[i], set2Val[i]));
-                setTimeout(hideSet2, trial.display_time)
+                self.jsPsych.pluginAPI.setTimeout(hideSet2, trial.display_time)
             };
 
             // Hide the second two items
             const hideSet2 = () => {
                 set2Pos.forEach(p => hideItem(p));
-                setTimeout(showRetrocue, trial.isi_time)
+                self.jsPsych.pluginAPI.setTimeout(showRetrocue, trial.isi_time)
             };
 
             // Show the retrocue
             const showRetrocue = () => {
                 rcPos.forEach(p => setCued(p, true));
-                setTimeout(hideRetrocue, trial.retrocue_time)
+                self.jsPsych.pluginAPI.setTimeout(hideRetrocue, trial.retrocue_time)
             };
 
             // Hide the retrocue until the probe
             const hideRetrocue = () => {
                 rcPos.forEach(p => setCued(p, false));
-                setTimeout(showProbe, trial.post_retrocue_delay)
+                self.jsPsych.pluginAPI.setTimeout(showProbe, trial.post_retrocue_delay)
             };
 
             /* ---- Probe + response wheel -------------------------------- */
@@ -336,7 +336,7 @@ var jsPsychMMChunking = (function (jsPsych) {
                     onResponse
                 });
 
-                setTimeout(endTrial, trial.max_response_time);
+                self.jsPsych.pluginAPI.setTimeout(endTrial, trial.max_response_time);
                 
             };
 

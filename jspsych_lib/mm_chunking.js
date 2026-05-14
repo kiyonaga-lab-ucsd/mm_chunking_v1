@@ -344,6 +344,7 @@ var jsPsychMMChunking = (function (jsPsych) {
             let trial_rt = null;
             let err = null;
             let reported_value = null;
+            let reported_feature = null;
             let space = null;
 
             const onResponse = (reportedValue, reportedFeature) => {
@@ -351,6 +352,7 @@ var jsPsychMMChunking = (function (jsPsych) {
                 trial_rt    = performance.now() - startTime;
                 console.log("RT: ", trial_rt)
                 reported_value = reportedValue;
+                reported_feature = reportedFeature;
                 space = probeType === 'orientation' ? 180 : 360;
                 err   = circularError(reported_value, probeVal, space);
 
@@ -393,9 +395,9 @@ var jsPsychMMChunking = (function (jsPsych) {
                     probe_type:          probeType,
                     probe_pos:           probePos,
                     probe_value:         probeVal,
-                    reported_value:      reportedValue,
-                    reported_feature:    reportedFeature,   // 'color' or 'orientation'
-                    clicked_wrong_wheel: reportedFeature !== probeType,
+                    reported_value:      reported_value,
+                    reported_feature:    reported_feature,   // 'color' or 'orientation'
+                    clicked_wrong_wheel: reported_feature !== probeType,
                     error:               err,
                     trial_rt:            trial_rt,
                     all_positions:       positions,

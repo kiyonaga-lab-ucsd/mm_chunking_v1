@@ -212,6 +212,7 @@ const practiceVars = jsPsych.randomization.shuffle(
     all_trial_types.flatMap(bt => buildTrialVariables(bt, 1))
 ).slice(0, n_practice_trials);
 
+/*
 timeline.push({
     timeline: [{
         type:             jsPsychMMChunking,
@@ -225,6 +226,7 @@ timeline.push({
     timeline_variables: practiceVars,
     randomize_order: false,
 });
+*/
 
 // Practice trials
 timeline.push({

@@ -350,31 +350,6 @@ var jsPsychMMChunking = (function (jsPsych) {
                 const space = probeType === 'orientation' ? 180 : 360;
                 const err   = circularError(reportedValue, probeVal, space);
 
-                trialData = {
-                    block_type:          trial.block_type,
-                    is_practice:         trial.is_practice,
-                    set_size,
-                    stim_types:          trial.stim_types,
-                    retrocue_indices:    trial.retrocue_indices,
-                    probe_index:         trial.probe_index,
-                    probe_type:          probeType,
-                    probe_pos:           probePos,
-                    probe_value:         probeVal,
-                    reported_value:      reportedValue,
-                    reported_feature:    reportedFeature,   // 'color' or 'orientation'
-                    clicked_wrong_wheel: reportedFeature !== probeType,
-                    error:               err,
-                    trial_rt:            trial_rt,
-                    all_positions:       positions,
-                    all_values:          values,
-                    rc_positions:        rcPos,
-                    rc_values:           rcVal,
-                    display_time:        trial.display_time,
-                    isi_time:            trial.isi_time,
-                    retrocue_time:       trial.retrocue_time,
-                    post_retrocue_delay: trial.post_retrocue_delay,
-                };
-
                 if (trial.feedback) {
                     showFeedback({
                         probePos, probeVal, probeType, err, reportedFeature,
@@ -403,6 +378,30 @@ var jsPsychMMChunking = (function (jsPsych) {
             var endTrial = () => {
                 if (trialEnded) return;
                 trialEnded = true;
+                 trialData = {
+                    block_type:          trial.block_type,
+                    is_practice:         trial.is_practice,
+                    set_size,
+                    stim_types:          trial.stim_types,
+                    retrocue_indices:    trial.retrocue_indices,
+                    probe_index:         trial.probe_index,
+                    probe_type:          probeType,
+                    probe_pos:           probePos,
+                    probe_value:         probeVal,
+                    reported_value:      reportedValue,
+                    reported_feature:    reportedFeature,   // 'color' or 'orientation'
+                    clicked_wrong_wheel: reportedFeature !== probeType,
+                    error:               err,
+                    trial_rt:            trial_rt,
+                    all_positions:       positions,
+                    all_values:          values,
+                    rc_positions:        rcPos,
+                    rc_values:           rcVal,
+                    display_time:        trial.display_time,
+                    isi_time:            trial.isi_time,
+                    retrocue_time:       trial.retrocue_time,
+                    post_retrocue_delay: trial.post_retrocue_delay,
+                };
                 display_element.innerHTML = '';
                 self.jsPsych.finishTrial(trialData || {});
             };

@@ -266,6 +266,13 @@ blocks.forEach((blockVars, blockIndex) => {
 /* ============================
    END 
    ============================ */
+timeline.push({
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "LZhfcBUZnJmU",
+    filename: filename,
+    data_string: () => jsPsych.data.get().csv()
+});
 
 timeline.push({
     type: jsPsychInstructions,
@@ -275,13 +282,6 @@ timeline.push({
     button_label_next: 'Back to SONA',
 });
 
-timeline.push({
-    type: jsPsychPipe,
-    action: "save",
-    experiment_id: "LZhfcBUZnJmU",
-    filename: filename,
-    data_string: () => jsPsych.data.get().csv()
-});
 /* ---- Run ---- */
 jsPsych.run(timeline);
 
